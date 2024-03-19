@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  postgres:
+    container_name: boot-dev-postgres
+    build: .
+    environment:
+      POSTGRES_PASSWORD: db    
+    volumes: 
+      - bootdev-sql:/var/lib/postgresql/data/
+      - bootdev-pgagent-backup:/home/course/
+      
+  pgadmin:
+    depends_on:
+      - postgres
+    container_name: boot-dev-pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - 5055:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - bootdev-pgadmin:/var/lib/pgadmin
+
+volumes:
+  bootdev-sql:
+    external: false
+  bootdev-pgagent-backup:
+    external: false
+  bootdev-pgadmin:
+    external: false
